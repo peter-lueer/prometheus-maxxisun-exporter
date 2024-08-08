@@ -1,0 +1,44 @@
+{
+    "_id": { "name" : "_id", "documentation" : "Some ID" },
+    "deviceId": { "name" : "deviceId", "documentation" : "Some deviceId" },
+    
+    "ip_addr": { "name" : "ip_addr", "documentation" : "local CCU IP","type":"IP" },
+    "wifiStrength": { "name" : "wifiStrength", "documentation" : "Wifi Signal Strength", "type" : "Number" },
+    "sendCount": { "name" : "sendCount", "documentation" : "Some Info", "type" : "Number" },
+    "Pr": { "name" : "Pr", "documentation" : "Some Info", "type" : "Number" },
+    "meterReading": { "name" : "meterReading", "documentation" : "Some Info" },
+
+    "PV_power_total": { "name" : "PV_power_total", "documentation" : "PV generated Power", "type" : "Number"},
+    "SOC": { "name" : "SOC", "documentation" : "Battery Power-Level", "type" : "Number" },
+
+    "v_ccu": { "name" : "v_ccu", "documentation" : "Some Info", "type" : "Number" },
+    "i_ccu": { "name" : "i_ccu", "documentation" : "Some Info", "type" : "Number" },
+    "ccuTotalPower": { "name" : "ccuTotalPower", "documentation" : "Some Info", "type" : "Number"},
+    
+    "Pccu": { "name" : "Pccu", "documentation" : "Some Info", "type" : "Number" },
+    "error": { "name" : "error", "documentation" : "Some Info", "type" : "Number" },
+    "firmwareVersion": { "name" : "firmwareVersion", "documentation" : "Some Info", "type" : "Number" },
+    "box_id": { "name" : "box_id", "documentation" : "Some Info" },
+    "date": { "name" : "date", "documentation" : "Some Info", "type" : "TIMESTAMP" },
+
+    "batteriesInfo_batteryVoltage": {"name" : "batteriesInfo_batteryVoltage", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_batteryCurrent": {"name" : "batteriesInfo_batteryCurrent", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_batteryPower": {"name" : "batteriesInfo_batteryPower", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_batterySOC": {"name" : "batteriesInfo_batterySOC", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_batteryNominalCapacity": {"name" : "batteriesInfo_batteryNominalCapacity", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_batteryCapacity": {"name" : "batteriesInfo_batteryCapacity", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_pvVoltage": {"name" : "batteriesInfo_pvVoltage", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_pvCurrent": {"name" : "batteriesInfo_pvCurrent", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_pvPower": {"name" : "batteriesInfo_pvPower", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_mpptVoltage": {"name" : "batteriesInfo_mpptVoltage", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_mpptCurrent": {"name" : "batteriesInfo_mpptCurrent", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_mpptPower": {"name" : "batteriesInfo_mpptPower", "documentation" : "Some Info", "type" : "Number_List" },
+    "batteriesInfo_mpptPower2": {"name" : "batteriesInfo_mpptPower2", "documentation" : "Some Info", "type" : "Number_List" },
+
+    "convertersInfo_ccuTemperature": {"name" : "convertersInfo_ccuTemperature", "documentation" : "Some Info", "type" : "Number_List" },
+    "convertersInfo_ccuVoltage": {"name" : "convertersInfo_ccuVoltage", "documentation" : "Some Info", "type" : "Number_List" },
+    "convertersInfo_ccuCurrent": {"name" : "convertersInfo_ccuCurrent", "documentation" : "Some Info", "type" : "Number_List" },
+    "convertersInfo_ccuPower": {"name" : "convertersInfo_ccuPower", "documentation" : "Some Info", "type" : "Number_List" },
+    "convertersInfo_version": {"name" : "convertersInfo_version", "documentation" : "Some Info", "type" : "List" },
+    "convertersInfo_command": {"name" : "convertersInfo_command", "documentation" : "Some Info", "type" : "List" }
+}
