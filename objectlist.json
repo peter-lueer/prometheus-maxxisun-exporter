@@ -1,13 +1,12 @@
 {
-    "deviceId": { "name" : "deviceId", "documentation" : "Some deviceId" },
+    "deviceId": { "name" : "deviceId", "documentation" : "CCU Device ID" },
     
     "wifiStrength": { "name" : "wifiStrength", "documentation" : "Wifi Signal Strength", "type" : "Number" },
     "Pr": { "name" : "Pr", "documentation" : "Some Info", "type" : "Number" },
 
     "PV_power_total": { "name" : "PV_power_total", "documentation" : "PV generated Power", "type" : "Number"},
     "SOC": { "name" : "SOC", "documentation" : "Battery Power-Level", "type" : "Number" },
-
-    "ccuTotalPower": { "name" : "ccuTotalPower", "documentation" : "Some Info", "type" : "Number"},
+    "Pccu": { "name" : "Pccu", "documentation" : "Some Info", "type" : "Number" },
     "firmwareVersion": { "name" : "firmwareVersion", "documentation" : "Some Info", "type" : "Number" },
     "date": { "name" : "date", "documentation" : "Some Info", "type" : "TIMESTAMP" },
 
