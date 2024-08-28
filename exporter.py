@@ -58,7 +58,7 @@ class Exporter(object):
         # if os.path.exists(self.__healthy_file_path):
         #     os.remove(self.__healthy_file_path)
 
-        self.__init_client(args.config_file, args.api_url, args.api_token)
+        self.__init_client(args.config_file, args.api_url, args.maxxisun_email, args.maxxisun_ccu)
         self.__init_metrics()
         try:
             prometheus_client.start_http_server(self.__metric_port)
@@ -69,30 +69,35 @@ class Exporter(object):
             sys.exit(1)
 
     
-    def __init_client(self, config_file, api_url, api_token):
+    def __init_client(self, config_file, api_url, maxxisun_email, maxxisun_ccu):
 
         try:
-            if api_url != None and api_token != None:
+            if api_url != None and maxxisun_email != None and maxxisun_ccu != None:
                 logger.info("use commandline parameters")
                 self.api_url = api_url
-                self.api_token = api_token
-            elif os.getenv('api_url',None) != None or os.getenv('api_token',None) != None:
+                self.maxxisun_email = maxxisun_email
+                self.maxxisun_ccu = maxxisun_ccu
+            elif os.getenv('api_url',None) != None or (os.getenv('maxxisun_email',None) != None and os.getenv('maxxisun_ccu', None) != None):
                 logger.info("use environment variables")
                 self.api_url = os.getenv('api_url',None)
-                self.api_token = os.getenv('api_token',None)
+                self.maxxisun_email = os.getenv('maxxisun_email',None)
+                self.maxxisun_ccu= os.getenv('maxxisun_ccu',None)
             else:
                 logger.info("use config file '{}'".format(config_file))
                 configur = ConfigParser()
                 configur.read(config_file)
                 try:
                     self.api_url = configur.get('Maxxisun','URL')
-                    self.api_token = configur.get('Maxxisun','Token')
+                    self.maxxisun_email = configur.get('Maxxisun','Email')
+                    self.maxxisun_ccu = configur.get('Maxxisun','CCU')
                 except:
                     logger.warning(
                         "no Config-File found")
-                    
-            if self.api_url == None or self.api_token == None:
-                logger.error("No URL '{}' and Token '{}' Config found".format(self.api_ip,self.api_token))
+            
+            self.api_auth_url = 'https://maxxisun.app:3000/api/authentication/log-in'
+
+            if self.api_url == None or self.maxxisun_email == None or self.maxxisun_ccu == None:
+                logger.error("No URL '{}' and Mail '{}' CCU '{}' Config found".format(self.api_url, self.maxxisun_email, self.maxxisun_ccu))
                 sys.exit(1)
 
         except Exception as e:
@@ -229,7 +234,7 @@ class Exporter(object):
         )
         # general device info metric
         self.version_info.labels(
-            project_version="0.2"
+            project_version="0.5"
         ).set(1)
 
     def typeExists(self, listelement):
@@ -331,7 +336,6 @@ class Exporter(object):
             logger.warning("Date not saved. Error parsing data.")
             error="Set Value Error"
 
-
     def __collect_data_from_API(self):
 
         try:
@@ -339,9 +343,13 @@ class Exporter(object):
             responseData = None
             #Check Connection to Maxxisun
             
+            if (self.authToken == None):
+                logger.error("No AUTH Token found")
+                
+
             try:
                 logger.debug("Check Maxxisun online")
-                headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0', 'Accept':'application/json, text/plain, */*', "Authorization": 'Bearer '+ self.api_token}
+                headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0', 'Accept':'application/json, text/plain, */*', "Authorization": 'Bearer '+ self.authToken}
                 responseData = requests.get(self.api_url, headers=headers, verify=False)
 
                 canConnectToAPI = True
@@ -392,6 +400,22 @@ class Exporter(object):
             self.__collect_interval_seconds = self.__collect_interval_seconds_Backup * (self.__collect_Error + 1)
             logger.info('waiting {}s before next collection cycle'.format(self.__collect_interval_seconds))
             time.sleep(self.__collect_interval_seconds)
+    
+    def auth_to_API(self):
+        try:    
+            self.authToken = None
+            headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0', 'Accept':'application/json, text/plain, */*', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Content-Type': 'application/json'}
+            responseData = requests.post(self.api_auth_url, headers=headers, verify=False, data='{"email":"' + self.maxxisun_email + '","ccu":"' + self.maxxisun_ccu + '"}')
+
+            if (responseData.status_code >= 200 and responseData.status_code < 300):
+                self.auth_JSON = json.loads(responseData.text)
+                self.authToken = self.auth_JSON['jwt']
+                return
+
+            logger.error("Something went wrong with auth")
+        except Exception as e:
+            logger.error("Auth failed")
+
 
 def handler(signum, frame):
     logger.warning("Signal handler called with signal: {1}".format(signum))
@@ -415,9 +439,12 @@ if __name__ == '__main__':
     parser.add_argument('--api-url',
                         default="https://maxxisun.app:3000/api/last",
                         help='IP of Maxxisun API')
-    parser.add_argument('--api-token',
+    parser.add_argument('--maxxisun-email',
                         default=None,
-                        help='Bearer Token for Maxxisun API')
+                        help='E-Mail to login on Maxxisun.app')
+    parser.add_argument('--maxxisun-ccu',
+                        default=None,
+                        help='CCU to login on Maxxisun.app')
     parser.add_argument('--log-level',
                         default=30,
                         help='10-Debug 20-Info 30-Warning 40-Error 50-Critical')
@@ -426,5 +453,8 @@ if __name__ == '__main__':
     signal.signal(signal.SIGABRT, handler)
     e = Exporter(parser.parse_args())
     # Generate some requests.
+
+    e.auth_to_API()
+
     while True:
         e.collect()
