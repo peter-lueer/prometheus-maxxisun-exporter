@@ -6,6 +6,7 @@ import logging
 import os
 import prometheus_client
 import requests
+import urllib3
 import signal
 import sys
 import time
@@ -13,6 +14,7 @@ import time
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)-15s :: %(levelname)8s :: %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 logger = logging.getLogger(__name__)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class Exporter(object):
     """
