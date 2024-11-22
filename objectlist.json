@@ -10,5 +10,7 @@
     "firmwareVersion": { "name" : "firmwareVersion", "documentation" : "Some Info", "type" : "Number" },
     "date": { "name" : "date", "documentation" : "Some Info", "type" : "TIMESTAMP" },
 
+    "convertersInfo_version": {"name" : "convertersInfo_version", "documentation" : "Some Info", "type" : "List" },
+
     "batteriesInfo_batteryCapacity": {"name" : "batteriesInfo_batteryCapacity", "documentation" : "Some Info", "type" : "Number_List" }
 }
