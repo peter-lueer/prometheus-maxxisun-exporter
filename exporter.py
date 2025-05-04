@@ -236,7 +236,7 @@ class Exporter(object):
         )
         # general device info metric
         self.version_info.labels(
-            project_version="0.5"
+            project_version="&&BUILD_VERSION&&"
         ).set(1)
 
     def typeExists(self, listelement):
